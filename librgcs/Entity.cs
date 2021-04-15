@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+/// <summary>
+// Entity class
+/// </summary>
+//Might port this to other languages like:C++,Java,Python,Ruby
+//I don't know if I want to port this to X86 ASM
 namespace rgcs
 {
     class Entity
@@ -28,7 +32,7 @@ namespace rgcs
                 return -3;
             }
             Entity entity = this;
-
+            //Need to figure out where librg_table_ent_set is actually declared
             return 0x255;
         }
         int Untrack(World world, Int64 entity_id)
