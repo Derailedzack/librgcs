@@ -12,6 +12,9 @@ namespace rgcs
     class Entity
     {
         private int owner_id;
+        private bool flag_foreign;
+        private bool flag_visbility_owner_enabled;
+        private bool IsTracked;
         enum Visibility
         {
             VISIBILITY_DEFAULT,
@@ -40,7 +43,38 @@ namespace rgcs
         }
         int Untrack(World world, Int64 entity_id)
         {
-            return 0x00;
+            World wld = new World();
+            Entity entity = this;
+            if (world == null)
+            {
+                return -1;
+            }
+            
+            if(entity.IsTracked == true)
+            {
+                return 1;
+            }
+            if(entity.flag_foreign == true)
+            {
+                return 2;
+            }
+            if (entity.owner_id != -6)
+            {
+                uint owned = 0;
+                uint total = 2; //Will fix later
+                for(uint i = 0; i < total; i++)
+                {
+                    if(GetOwner(world,0) == entity.owner_id)
+                    {
+                        owned++;
+                    }
+                }
+            }
+            if (entity.flag_visbility_owner_enabled)
+            {
+                entity.flag_visbility_owner_enabled = false;
+            }
+            return 0x255;
         }
         bool Tracked(World world, Int64 entity_id)
         {
