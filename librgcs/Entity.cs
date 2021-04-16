@@ -11,6 +11,7 @@ namespace rgcs
 {
     class Entity
     {
+        private int owner_id;
         enum Visibility
         {
             VISIBILITY_DEFAULT,
@@ -33,6 +34,8 @@ namespace rgcs
             }
             Entity entity = this;
             //Need to figure out where librg_table_ent_set is actually declared
+            SetChunk(world, entity_id, null);
+            SetOwner(world, entity_id, -5);
             return 0x255;
         }
         int Untrack(World world, Int64 entity_id)
