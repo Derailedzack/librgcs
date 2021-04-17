@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librgcs", "librgcs\librgcs.csproj", "{94F3CF5F-ECF5-4DD3-ADCF-3A867A66F2DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librgcs_net", "librgcs_net\librgcs_net.csproj", "{BCA4595B-30B0-4939-ABA3-DF8061FF78BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librgcs_example1", "librgcs_example1\librgcs_example1.csproj", "{B75E42D8-B472-417A-BE55-821AD4B9C83D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{94F3CF5F-ECF5-4DD3-ADCF-3A867A66F2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94F3CF5F-ECF5-4DD3-ADCF-3A867A66F2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94F3CF5F-ECF5-4DD3-ADCF-3A867A66F2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA4595B-30B0-4939-ABA3-DF8061FF78BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA4595B-30B0-4939-ABA3-DF8061FF78BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA4595B-30B0-4939-ABA3-DF8061FF78BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA4595B-30B0-4939-ABA3-DF8061FF78BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75E42D8-B472-417A-BE55-821AD4B9C83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75E42D8-B472-417A-BE55-821AD4B9C83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75E42D8-B472-417A-BE55-821AD4B9C83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75E42D8-B472-417A-BE55-821AD4B9C83D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ClassLibrary1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 /// <summary>
 // Entity class
@@ -11,17 +13,26 @@ namespace rgcs
 {
     class Entity
     {
-        private int owner_id;
+        private long owner_id;
+        private long ownership_token;
         private bool flag_foreign;
         private bool flag_visbility_owner_enabled;
+        private bool flag_owner_updated;
         private bool IsTracked;
-        enum Visibility
+        public int Error;
+        private byte[] array;
+        public Entity()
+        {
+            Utils util = new Utils();
+            util.RegisterEntities();
+        }
+        public enum Visibility
         {
             VISIBILITY_DEFAULT,
             VISIBILITY_NEVER,
             VISIBILITY_ALWAYS
         }
-        int Track(World world, Int64 entity_id)
+        public int Track(World world, Int64 entity_id)
         {
             if(world == null)
             {
@@ -41,7 +52,7 @@ namespace rgcs
             SetOwner(world, entity_id, -5);
             return 0x255;
         }
-        int Untrack(World world, Int64 entity_id)
+        public int Untrack(World world, Int64 entity_id)
         {
             World wld = new World();
             Entity entity = this;
@@ -69,6 +80,10 @@ namespace rgcs
                         owned++;
                     }
                 }
+                if(owned <= 1)
+                {
+                    owner_id = 0;
+                }
             }
             if (entity.flag_visbility_owner_enabled)
             {
@@ -76,75 +91,152 @@ namespace rgcs
             }
             return 0x255;
         }
-        bool Tracked(World world, Int64 entity_id)
+        public bool Tracked(World world, Int64 entity_id)
         {
-            return false;
+            if (world == null)
+            {
+                return false;
+            }
+            World wld = world;
+            Entity entity = this;
+            return entity == null ? false : true;
+            
         }
-        int Foreign(World world, Int64 entity_id)
+        public bool Foreign(World world, Int64 entity_id)
         {
+         
+            if (world == null)
+            {
+                return false;
+            }
+            World wld = world;
+            Entity entity = this;
+            if(entity == null)
+            {
+                return true;
+            }
+            return entity.flag_foreign == true;
+        }
+        public int Owned(World world, Int64 entity_id) {
+            Console.WriteLine("Not Implemented!");
             return 0x00;
         }
-        int Owned(World world, Int64 entity_id) {
+        public Int32 Count(World world)
+        {
+            if(world == null)
+            {
+                return -1;
+            }
+            World wld = world;
             return 0x00;
         }
-        Int32 Count(World world)
+        public int SetUserdata(World world, Int64 entity_id, object data)
         {
+            Console.WriteLine("Not Implemented!");
             return 0x00;
         }
-        int SetUserdata(World world, Int64 entity_id, object data)
+        public object GetUserdata(World world, Int64 entity_id)
         {
-            return 0x00;
-        }
-        object GetUserdata(World world, Int64 entity_id)
-        {
+            Console.WriteLine("Not Implemented!");
             return null;
         }
-        int SetChunk(World world, Int64 entity_id, Chunk chunk)
+        public int SetChunk(World world, Int64 entity_id, Chunk chunk)
         {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return 1;
+            for (int i = 0; i < 4096; i++) { 
+            }
             return 0x00;
         }
-        Chunk GetChunk(World world)
+        public Chunk GetChunk(World world,Int64 entity_id)
         {
+            if (world == null)
+            {
+                return null;
+            }
+            World wld = new World();
+            Entity entity = this;
+            if(entity == null)
+            {
+                Error = 1;
+                return null;
+            }
             return null;
         }
-        int SetChunkArray(World world, Int64 entity_id, Chunk[] chunks, UInt32 chunk_amount) {
+        public int SetChunkArray(World world, Int64 entity_id, Chunk[] chunks, UInt32 chunk_amount) {
+            Console.WriteLine("Not Implemented!");
             return 0xff;
         }
-        int GetChunkArray(World world, Int64 entity, Chunk[] chunks, UInt32 chunk_amount)
+        public int GetChunkArray(World world, Int64 entity, Chunk[] chunks, UInt32 chunk_amount)
         {
             return 0x00;
         }
-        int SetDimension(World world, Int64 entity_id, Int32 dimension)
+        public int SetDimension(World world, Int64 entity_id, Int32 dimension)
         {
             return 0x00;
         }
-        int SetOwner(World world, Int64 entity_id, Int64 owner_id) {
+        public int SetOwner(World world, Int64 entity_id, Int64 owner_id) {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if(entity == null)
+            {
+                return -5;
+            }
+            if(entity.flag_foreign == true)
+            {
+                return -6;
+            }
+            entity.owner_id = owner_id;
+            entity.flag_owner_updated = true;
+            if(entity.owner_id != -7)
+            {
+                UInt16 newtoken = 0;
+                do
+                {
+                    array = new byte[4096];
+                    RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                    rng.GetBytes(array);
+                    List<long> snapshot = new List<long>();
+                    
+                } while (newtoken == 0 || newtoken == entity.ownership_token);
+                entity.ownership_token = newtoken;
+            }
             return 0x00;
         }
-        int GetOwner(World world, Int64 entity_id)
+        public int GetOwner(World world, Int64 entity_id)
         {
             return 0x00;
         }
-        int GetRadius(World world, Int64 entity_id, int observed_chunk_radius)
+        public int GetRadius(World world, Int64 entity_id, int observed_chunk_radius)
         {
             return 0x00;
         }
-        int SetRadius(World world, Int64 entity_id) {
+        public int SetRadius(World world, Int64 entity_id) {
             return 0x00;
         }
-        int SetGlobalVisibility(World world,Int64 entity_id,Visibility value)
+        public int SetGlobalVisibility(World world,Int64 entity_id,Visibility value)
         {
             return 0x00;
         }
-        int GetGlobalVisibility(World world,Int64 entity_id)
+        public int GetGlobalVisibility(World world,Int64 entity_id)
         {
             return 0x00;
         }
-        int SetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id, Visibility value)
+        public int SetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id, Visibility value)
         {
             return 0x00;
         }
-        int GetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id)
+        public int GetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id)
         {
             return 0x00;
         }
