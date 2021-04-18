@@ -1,4 +1,5 @@
 ﻿using ClassLibrary1;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,27 +12,34 @@ using System.Text;
 //I don't know if I want to port this to X86 ASM
 namespace rgcs
 {
-    class Entity
+   public class Entity
     {
+       public enum Visibility
+        {
+            VISIBILITY_DEFAULT,
+            VISIBILITY_NEVER,
+            VISIBILITY_ALWAYS
+        }
         private long owner_id;
         private long ownership_token;
         private bool flag_foreign;
         private bool flag_visbility_owner_enabled;
         private bool flag_owner_updated;
         private bool IsTracked;
+        private int observed_radius;
+        private object userdata;
         public int Error;
         private byte[] array;
+        private Chunk[] chunks = new Chunk[4096];
+        private Utils util;
+        private Visibility visibility_global;
         public Entity()
         {
-            Utils util = new Utils();
+            util = new Utils();
             util.RegisterEntities();
+            
         }
-        public enum Visibility
-        {
-            VISIBILITY_DEFAULT,
-            VISIBILITY_NEVER,
-            VISIBILITY_ALWAYS
-        }
+       
         public int Track(World world, Int64 entity_id)
         {
             if(world == null)
@@ -132,13 +140,34 @@ namespace rgcs
         }
         public int SetUserdata(World world, Int64 entity_id, object data)
         {
-            Console.WriteLine("Not Implemented!");
+            if(world == null) //Ensure that world is not null
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if(entity == null)
+            {
+                return -7;
+            }
+            entity.userdata = data;
             return 0x00;
         }
         public object GetUserdata(World world, Int64 entity_id)
         {
-            Console.WriteLine("Not Implemented!");
-            return null;
+            if(world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null) {
+                Error = 4;
+                return null;
+            }
+              
+    
+            return entity.userdata;
         }
         public int SetChunk(World world, Int64 entity_id, Chunk chunk)
         {
@@ -169,13 +198,56 @@ namespace rgcs
             }
             return null;
         }
-        public int SetChunkArray(World world, Int64 entity_id, Chunk[] chunks, UInt32 chunk_amount) {
-            Console.WriteLine("Not Implemented!");
-            return 0xff;
-        }
-        public int GetChunkArray(World world, Int64 entity, Chunk[] chunks, UInt32 chunk_amount)
-        {
+        public int SetChunkArray(World world, Int64 entity_id, Chunk[] values, UInt32 chunk_amount) {
+            if(world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if(entity == null)
+            {
+                return -7;
+            }
+            try {
+                Assert.IsTrue(chunk_amount > 0 && chunk_amount < 4096);
+            }catch(AssertionException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+     
+            for (int i = 0; i < 4096; i++)
+            {
+                entity.chunks[i] = values[i];
+               
+            }
             return 0x00;
+        }
+        public int GetChunkArray(World world, Int64 entity_id, Chunk[] results, UInt32 chunk_amount)
+        {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+            {
+                return -7;
+            }
+            Assert.IsTrue(results != null);
+            uint count = 0;
+            uint buffer_limit = 4096;
+            for (uint i = 0; i < buffer_limit; i++)
+            {
+                if (entity.chunks[i] != null)
+                {
+                    results[count++] = entity.chunks[i];
+                }
+            }
+            chunk_amount = count;
+            
+            return 4096;
         }
         public int SetDimension(World world, Int64 entity_id, Int32 dimension)
         {
@@ -207,7 +279,17 @@ namespace rgcs
                     RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
                     rng.GetBytes(array);
                     List<long> snapshot = new List<long>();
-                    
+                    if (snapshot != null)
+                    {
+                        List<Int64> _i64 = new List<Int64>();
+                        _i64.Add(owner_id);
+                        snapshot.ElementAt((int)owner_id);
+
+                    }
+                    else
+                    {
+                        entity.ownership_token = 0;
+                    }
                 } while (newtoken == 0 || newtoken == entity.ownership_token);
                 entity.ownership_token = newtoken;
             }
@@ -215,29 +297,101 @@ namespace rgcs
         }
         public int GetOwner(World world, Int64 entity_id)
         {
-            return 0x00;
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return -4;
+            
+            return (int)entity.owner_id;
         }
-        public int GetRadius(World world, Int64 entity_id, int observed_chunk_radius)
+        public int GetRadius(World world, Int64 entity_id)
         {
-            return 0x00;
+            if(world == null)
+            {
+                return -5;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return -7;
+            return entity.observed_radius;
         }
-        public int SetRadius(World world, Int64 entity_id) {
+        public int SetRadius(World world, Int64 entity_id, int observed_chunk_radius) {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return -7;
+            entity.observed_radius = observed_chunk_radius;
             return 0x00;
         }
         public int SetGlobalVisibility(World world,Int64 entity_id,Visibility value)
         {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return -7;
+            entity.visibility_global = value;
             return 0x00;
         }
-        public int GetGlobalVisibility(World world,Int64 entity_id)
+        public Visibility GetGlobalVisibility(World world,Int64 entity_id)
         {
-            return 0x00;
+            if (world == null)
+            {
+                Error = -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                Error  = -7;
+            return entity.visibility_global;
         }
         public int SetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id, Visibility value)
         {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                return -7;
+            if(entity.owner_id == owner_id)
+            {
+                return -8;
+            }
+            if (!entity.flag_visbility_owner_enabled)
+            {
+                entity.flag_visbility_owner_enabled = true;
+            }
             return 0x00;
         }
-        public int GetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id)
+        public Visibility GetOwnerVisibility(World world,Int64 entity_id,Int64 owner_id)
         {
+            if (world == null)
+            {
+                Error = -1;
+            }
+            World wld = world;
+            Entity entity = this;
+            if (entity == null)
+                Error = -7;
+            if (!entity.flag_visbility_owner_enabled)
+            {
+                return Visibility.VISIBILITY_DEFAULT;
+            }
+            
             return 0x00;
         }
 

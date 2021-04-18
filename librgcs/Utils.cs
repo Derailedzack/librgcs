@@ -7,13 +7,16 @@ using System.Text;
 
 namespace ClassLibrary1
 {
-    class Utils
+    public class Utils
     {
-        private List<Entity> Entities = new List<Entity>();
-        private Player player = new Player();
-        private DummyEntity dummy = new DummyEntity();
+        private List<Entity> Entities;
+        private Player player;
+        private DummyEntity dummy;
         public void RegisterEntities()
         {
+            player = new Player();
+            dummy = new DummyEntity();
+            Entities = new List<Entity>();
             Entities.Add(player);
             Entities.Add(dummy);
            

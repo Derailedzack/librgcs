@@ -1,4 +1,5 @@
 ﻿using librgcs_net;
+using rgcs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace librgcs_example1
     {
         static void Main(string[] args)
         {
-            Server server = new Server();
-            server.StartServer(25565);
-           
+            Entity entity = new Entity();
+            World world = new World();
+            Chunk[] chunks = new Chunk[4096];
+            entity.GetChunkArray(world, 0, chunks, 4096);
         }
     }
 }

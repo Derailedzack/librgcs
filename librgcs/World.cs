@@ -1,6 +1,6 @@
 ﻿namespace rgcs
 {
-    internal class World
+    public class World
     {
     }
 }

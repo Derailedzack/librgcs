@@ -1,6 +1,6 @@
 ﻿namespace rgcs
 {
-    internal class Chunk
+    public class Chunk
     {
     }
 }
