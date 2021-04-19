@@ -54,7 +54,7 @@ namespace rgcs
             {
                 return -3;
             }
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             //Need to figure out where librg_table_ent_set is actually declared
             SetChunk(world, entity_id, null);
             SetOwner(world, entity_id, -5);
@@ -62,8 +62,8 @@ namespace rgcs
         }
         public int Untrack(World world, Int64 entity_id)
         {
-            World wld = new World();
-            Entity entity = this;
+            World wld = world;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (world == null)
             {
                 return -1;
@@ -80,7 +80,7 @@ namespace rgcs
             if (entity.owner_id != -6)
             {
                 uint owned = 0;
-                uint total = 2; //Will fix later
+                uint total = (uint)util.GetNumOfEntitiesInList(); //Will fix later
                 for(uint i = 0; i < total; i++)
                 {
                     if(GetOwner(world,0) == entity.owner_id)
@@ -106,7 +106,7 @@ namespace rgcs
                 return false;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             return entity == null ? false : true;
             
         }
@@ -118,7 +118,7 @@ namespace rgcs
                 return false;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if(entity == null)
             {
                 return true;
@@ -145,7 +145,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if(entity == null)
             {
                 return -7;
@@ -160,7 +160,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null) {
                 Error = 4;
                 return null;
@@ -176,7 +176,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return 1;
             for (int i = 0; i < 4096; i++) { 
@@ -190,7 +190,7 @@ namespace rgcs
                 return null;
             }
             World wld = new World();
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if(entity == null)
             {
                 Error = 1;
@@ -204,7 +204,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if(entity == null)
             {
                 return -7;
@@ -230,7 +230,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
             {
                 return -7;
@@ -259,7 +259,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if(entity == null)
             {
                 return -5;
@@ -302,7 +302,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return -4;
             
@@ -315,7 +315,7 @@ namespace rgcs
                 return -5;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return -7;
             return entity.observed_radius;
@@ -326,7 +326,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return -7;
             entity.observed_radius = observed_chunk_radius;
@@ -339,7 +339,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return -7;
             entity.visibility_global = value;
@@ -352,7 +352,7 @@ namespace rgcs
                 Error = -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 Error  = -7;
             return entity.visibility_global;
@@ -364,7 +364,7 @@ namespace rgcs
                 return -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 return -7;
             if(entity.owner_id == owner_id)
@@ -384,7 +384,7 @@ namespace rgcs
                 Error = -1;
             }
             World wld = world;
-            Entity entity = this;
+            Entity entity = util.GetEntityAt((int)entity_id);
             if (entity == null)
                 Error = -7;
             if (!entity.flag_visbility_owner_enabled)
