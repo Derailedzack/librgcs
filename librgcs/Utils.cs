@@ -28,6 +28,13 @@ namespace ClassLibrary1
                 Entities.Add(entities[i]);
             }
         }
-        
+        public Entity GetEntityAt(int entity_id)
+        {
+            return Entities.ElementAt(entity_id);
+        }
+        public int GetNumOfEntitiesInList()
+        {
+            return Entities.Count;
+        }
     }
 }
