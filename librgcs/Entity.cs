@@ -32,6 +32,7 @@ namespace rgcs
         private byte[] array;
         private Chunk[] chunks = new Chunk[4096];
         private Utils util;
+        private Int32 dimension;
         private Visibility visibility_global;
         public Entity()
         {
@@ -251,7 +252,32 @@ namespace rgcs
         }
         public int SetDimension(World world, Int64 entity_id, Int32 dimension)
         {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = util.GetEntityAt((int)entity_id);
+            if (entity == null)
+            {
+                return -5;
+            }
+            entity.dimension = dimension;
             return 0x00;
+        }
+        public int GetDimension(World world, Int64 entity_id)
+        {
+            if (world == null)
+            {
+                return -1;
+            }
+            World wld = world;
+            Entity entity = util.GetEntityAt((int)entity_id);
+            if (entity == null)
+            {
+                return -5;
+            }
+            return entity.dimension;
         }
         public int SetOwner(World world, Int64 entity_id, Int64 owner_id) {
             if (world == null)
