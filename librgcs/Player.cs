@@ -8,5 +8,6 @@ namespace ClassLibrary1
 {
     class Player : Entity
     {
+       // Vector3 vector = new Vector3();
     }
 }
